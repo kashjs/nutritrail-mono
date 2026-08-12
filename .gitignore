@@ -1,0 +1,7 @@
+# Local files
+/temp-notes/
+
+# Server dependencies
+/server/node_modules/
+/server/.env
+
