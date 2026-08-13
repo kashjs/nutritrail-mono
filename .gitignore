@@ -1,7 +1,10 @@
 # Local files
 /temp-notes/
+/learning/
 
 # Server dependencies
 /server/node_modules/
 /server/.env
 
+# Other files
+.DS_Store
