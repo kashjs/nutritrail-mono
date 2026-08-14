@@ -4,10 +4,15 @@ const pool = require('./db');
 const app = express();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const requireAuth = require('./middleware/auth');
 
 
 app.get('/', (req, res) => {
     res.send('hello world')
+});
+
+app.get('/me', requireAuth, (req, res) => {
+    res.json({userId: req.user.userId});
 });
 
 app.get('/health', async (req, res) => {
@@ -31,7 +36,7 @@ app.post('/login', express.json(), async (req, res) => {
     const {email, password} = req.body;
 
     const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-    user = result.rows[0];
+    const user = result.rows[0];
     if (!user) {
         return res.status(401).json({error: 'Invalid credentials'});
     }
