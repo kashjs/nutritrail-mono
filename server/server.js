@@ -6,13 +6,10 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const requireAuth = require('./middleware/auth');
 
+app.use(express.json());
 
 app.get('/', (req, res) => {
     res.send('hello world')
-});
-
-app.get('/me', requireAuth, (req, res) => {
-    res.json({userId: req.user.userId});
 });
 
 app.get('/health', async (req, res) => {
@@ -20,7 +17,7 @@ app.get('/health', async (req, res) => {
     res.send(result.rows[0]);
 });
 
-app.post('/register', express.json(), async (req, res) => {
+app.post('/register', async (req, res) => {
     const { email, password } = req.body;
     const passwordHash = await bcrypt.hash(password, 10);
 
@@ -32,7 +29,7 @@ app.post('/register', express.json(), async (req, res) => {
     res.status(201).json(result.rows[0]);
 });
 
-app.post('/login', express.json(), async (req, res) => {
+app.post('/login', async (req, res) => {
     const {email, password} = req.body;
 
     const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
@@ -49,6 +46,47 @@ app.post('/login', express.json(), async (req, res) => {
     const token = jwt.sign({userId: user.id}, process.env.JWT_SECRET, {expiresIn: '1h'});
 
     res.json({token})
+});
+
+// =========== Authentication required =========== //
+app.use(requireAuth);
+
+app.get('/me', (req, res) => {
+    res.json({userId: req.user.userId});
+});
+
+
+app.post('/meals', async (req, res) => {
+    const {description, calories, protein_g, carbs_g, fat_g, meal_type, consumed_at, items} = req.body;
+
+    const client = await pool.connect();
+    try {
+        await client.query('BEGIN');
+        const mealReault = await client.query(
+            `INSERT INTO meals (user_id, description, calories, protein_g, carbs_g, fat_g, meal_type, consumed_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+            [req.user.userId, description, calories, protein_g, carbs_g, fat_g, meal_type, consumed_at]
+        );
+        const meal = mealReault.rows[0];
+
+        const savedItems = [];
+        if (items && items.length) {
+            for (const item of items) {
+                const itemResult = await client.query(
+                    `INSERT INTO meal_items (meal_id, description, quantity, unit, calories, protein_g, carbs_g, fat_g) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+                    [meal.id, item.description, item.quantity, item.unit, item.calories, item.protein_g, item.carbs_g, item.fat_g]
+                );
+                savedItems.push(itemResult.rows[0]);
+            }
+        }
+
+        await client.query('COMMIT');
+        res.status(201).json({...meal, items: savedItems});
+    } catch (error) {
+        await client.query('ROLLBACK');
+        res.status(500).json({error: 'Failed to create meal'})
+    } finally {
+        await client.release();
+    }
 });
 
 
