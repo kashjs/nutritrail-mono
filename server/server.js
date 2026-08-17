@@ -89,6 +89,40 @@ app.post('/meals', async (req, res) => {
     }
 });
 
+app.get('/meals', async (req, res) => {
+    const mealResult = await pool.query(
+        'SELECT * FROM meals WHERE user_id = $1 ORDER BY consumed_at DESC',
+        [req.user.userId]
+    );
+    const meals = mealResult.rows;
+
+    if (meals.length === 0) {
+        res.json([]);
+    }
+
+    const mealIds = meals.map(meal => meal.id);
+
+    const itemResult = await pool.query(
+        `SELECT * FROM meal_items WHERE meal_id = ANY($1::int[])`,
+        [mealIds]
+    ); 
+
+    const itemsByMeal = {}
+    for (const item of itemResult.rows) {
+        if(!itemsByMeal[item.meal_id]) {
+            itemsByMeal[item.meal_id] = [];
+        }
+        itemsByMeal[item.meal_id].push(item);
+    }
+
+    const mealWithItems = meals.map(meal => ({
+        ...meal,
+        items: itemsByMeal[meal.id] || []
+    }));
+
+    res.json(mealWithItems);
+});
+
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running at http://localhost:${process.env.PORT}`);
