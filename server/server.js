@@ -90,14 +90,29 @@ app.post('/meals', async (req, res) => {
 });
 
 app.get('/meals', async (req, res) => {
+    const {date, to, from} = req.query;
+
+    let mealsQuery = `SELECT * FROM meals WHERE user_id = $1`;
+    const mealsQueryParams = [req.user.userId];
+
+    if(date) {
+        mealsQuery += ' AND consumed_at::date = $2'
+        mealsQueryParams.push(date);
+    } else if(from && to) {
+        mealsQuery += ' AND consumed_at::date BETWEEN $2 AND $3'
+        mealsQueryParams.push(from, to);
+    }
+
+    mealsQuery += ' ORDER BY consumed_at DESC';
+    console.log(mealsQueryParams);
     const mealResult = await pool.query(
-        'SELECT * FROM meals WHERE user_id = $1 ORDER BY consumed_at DESC',
-        [req.user.userId]
+        mealsQuery,
+        mealsQueryParams
     );
     const meals = mealResult.rows;
 
     if (meals.length === 0) {
-        res.json([]);
+        return res.json([]);
     }
 
     const mealIds = meals.map(meal => meal.id);
