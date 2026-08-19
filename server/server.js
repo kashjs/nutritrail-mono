@@ -83,7 +83,7 @@ app.post('/meals', async (req, res) => {
         res.status(201).json({...meal, items: savedItems});
     } catch (error) {
         await client.query('ROLLBACK');
-        res.status(500).json({error: 'Failed to create meal'})
+        res.status(500).json({error: 'Failed to create meal'});
     } finally {
         await client.release();
     }
@@ -104,7 +104,6 @@ app.get('/meals', async (req, res) => {
     }
 
     mealsQuery += ' ORDER BY consumed_at DESC';
-    console.log(mealsQueryParams);
     const mealResult = await pool.query(
         mealsQuery,
         mealsQueryParams
@@ -130,14 +129,106 @@ app.get('/meals', async (req, res) => {
         itemsByMeal[item.meal_id].push(item);
     }
 
-    const mealWithItems = meals.map(meal => ({
+    const mealsWithItems = meals.map(meal => ({
         ...meal,
         items: itemsByMeal[meal.id] || []
     }));
 
-    res.json(mealWithItems);
+    res.json(mealsWithItems);
 });
 
+app.get('/meals/:id', async (req, res) => {
+    const mealId = req.params.id;
+
+    try {
+        const mealResult = await pool.query(`SELECT * FROM meals WHERE id = $1 AND user_id = $2`, [mealId, req.user.userId]);
+
+        if (mealResult.rows.length === 0) {
+            return res.status(404).json({error: 'No meal found'});
+        }
+
+        const meal = mealResult.rows[0];
+
+        const itemResult = await pool.query(
+            `SELECT * FROM meal_items WHERE meal_id = $1`,
+            [meal.id]
+        ); 
+        meal.items = itemResult.rows;
+
+        res.json(meal);
+    } catch (error) {
+        res.status(500).json({error: 'Failed to fetch meal'});
+    }
+});
+
+app.patch('/meals/:id', async(req, res) => {
+    const mealId = req.params.id;
+    const {description, calories, protein_g, carbs_g, fat_g, meal_type, consumed_at} = req.body;
+    const fields = {description, calories, protein_g, carbs_g, fat_g, meal_type, consumed_at};
+
+    const client = await pool.connect();
+    try {
+        await client.query('BEGIN');
+
+
+        const setClauses = [];
+        const params = [];
+
+        for (const [column, value] of Object.entries(fields)) {
+            if (value !== undefined) {
+                params.push(value);
+                setClauses.push(`${column} = $${params.length}`);
+            }
+        }
+
+        if (setClauses.length === 0) {
+            await client.query('COMMIT');
+            res.status(400).json({error: 'No fields to update'});
+        } else {
+            params.push(mealId, req.user.userId);
+            const updateQuery = `
+                UPDATE meals SET ${setClauses.join(', ')} 
+                WHERE id = $${params.length - 1} 
+                AND user_id = $${params.length} 
+                RETURNING *
+            `;
+
+            const updateResult = await client.query(updateQuery, params);
+
+            await client.query('COMMIT');
+
+            if(updateResult.rows.length === 0) {
+                res.status(404).json({error: 'No meal found'});
+            } else {
+                res.json(updateResult.rows[0]);
+            }
+        }        
+    } catch(error) {
+        res.status(500).json({ error: 'Failed to update meal' });
+        await client.query('ROLLBACK');
+    } finally {
+        await client.release();
+    }
+});
+
+app.delete('/meals/:id', async (req, res) => {
+    const mealId = req.params.id;
+
+    try {
+        const deleteResult = await pool.query(
+            `DELETE FROM meals WHERE id = $1 AND user_id = $2`,
+            [mealId, req.user.userId]
+        );
+
+        if (deleteResult.rowCount === 0) {
+            return res.status(404).json({error: 'No meal found'});
+        }
+
+        res.status(204).send();
+    } catch (error) {
+        res.status(500).json({error: 'Failed to delete meal'});
+    }
+});
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running at http://localhost:${process.env.PORT}`);
