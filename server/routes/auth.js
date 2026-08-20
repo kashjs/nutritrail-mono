@@ -2,10 +2,22 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const pool = require('../db');
+const validate = require('../middleware/validate');
+const { z } = require('zod');
 
 const router = express.Router();
 
-router.post('/register', async (req, res) => {
+const registerSchema = z.object({
+    email: z.email(),
+    password: z.string().min(8)
+});
+
+const loginSchema = z.object({
+    email: z.email(),
+    password: z.string().min(1)
+});
+
+router.post('/register', validate(registerSchema), async (req, res) => {
     const { email, password } = req.body;
     const passwordHash = await bcrypt.hash(password, 10);
 
@@ -17,7 +29,7 @@ router.post('/register', async (req, res) => {
     res.status(201).json(result.rows[0]);
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login', validate(loginSchema), async (req, res) => {
     const {email, password} = req.body;
 
     const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);

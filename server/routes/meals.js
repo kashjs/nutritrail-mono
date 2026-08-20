@@ -1,10 +1,37 @@
 const express = require('express');
 const pool = require('../db');
 const { getMealByIdForUser, getItemsByMealIds } = require('../queries/meals');
+const validate = require('../middleware/validate');
+const { z } = require('zod');
 
 const router = express.Router();
 
-router.post('/meals', async (req, res) => {
+const macroField = z.number().nonnegative().nullable().optional();
+
+const mealItemSchema = z.object({
+    description: z.string().min(1),
+    quantity: z.number().positive().optional(),
+    unit: z.string().min(1).optional(),
+    calories: macroField,
+    protein_g: macroField,
+    carbs_g: macroField,
+    fat_g: macroField,
+});
+
+const createMealSchema = z.object({
+    description: z.string().min(1),
+    calories: macroField,
+    protein_g: macroField,
+    carbs_g: macroField,
+    fat_g: macroField,
+    meal_type: z.enum(['breakfast', 'lunch', 'dinner', 'snack']),
+    consumed_at: z.coerce.date(),
+    items: z.array(mealItemSchema).optional(),
+});
+
+const updateMealSchema = createMealSchema.omit({items: true}).partial();
+
+router.post('/meals', validate(createMealSchema), async (req, res) => {
     const {description, calories, protein_g, carbs_g, fat_g, meal_type, consumed_at, items} = req.body;
 
     const client = await pool.connect();
@@ -85,7 +112,7 @@ router.get('/meals/:id', async (req, res) => {
     res.json(meal);
 });
 
-router.patch('/meals/:id', async (req, res) => {
+router.patch('/meals/:id', validate(updateMealSchema), async (req, res) => {
     const mealId = req.params.id;
     const {description, calories, protein_g, carbs_g, fat_g, meal_type, consumed_at} = req.body;
     const fields = {description, calories, protein_g, carbs_g, fat_g, meal_type, consumed_at};
