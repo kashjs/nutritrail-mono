@@ -26,7 +26,7 @@ async function getItemsByMealIds(client, mealIds) {
 
 async function insertMealItem(client, mealId, mealItemObject) {
         const result = await client.query(
-                    `INSERT INTO meal_items (meal_id, description, quantity, unit, calories, protein_g, carbs_g, fat_g, fiber_g) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+                    `INSERT INTO meal_items (meal_id, description, quantity, unit, calories, protein_g, carbs_g, fat_g, fiber_g) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
                     [mealId, mealItemObject.description, mealItemObject.quantity, mealItemObject.unit, mealItemObject.calories, mealItemObject.protein_g, mealItemObject.carbs_g, mealItemObject.fat_g, mealItemObject.fiber_g]
                 )
         return result.rows[0];

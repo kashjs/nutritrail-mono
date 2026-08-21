@@ -47,7 +47,7 @@ router.post('/meals', validate(createMealSchema), async (req, res) => {
     try {
         await client.query('BEGIN');
         const mealResult = await client.query(
-            `INSERT INTO meals (user_id, description, calories, protein_g, carbs_g, fat_g, fiber_g, meal_type, consumed_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+            `INSERT INTO meals (user_id, description, calories, protein_g, carbs_g, fat_g, fiber_g, meal_type, consumed_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
             [req.user.userId, description, calories, protein_g, carbs_g, fat_g, fiber_g, meal_type, consumed_at]
         );
         const meal = mealResult.rows[0];
