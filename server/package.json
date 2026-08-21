@@ -15,9 +15,14 @@
   "type": "commonjs",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --runInBand",
     "start": "node server.js",
     "migrate": "node-pg-migrate"
+  },
+  "jest": {
+    "setupFiles": ["./tests/setup.js"],
+    "setupFilesAfterEnv": ["./tests/setupAfterEnv"],
+    "testEnvironment": "node"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
@@ -30,5 +35,9 @@
     "openai": "^7.5.0",
     "pg": "^8.23.0",
     "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "jest": "^30.4.2",
+    "supertest": "^7.2.2"
   }
 }

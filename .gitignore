@@ -4,7 +4,7 @@
 
 # Server dependencies
 /server/node_modules/
-/server/.env
+/server/.env*
 
 # Other files
 .DS_Store
