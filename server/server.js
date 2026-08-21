@@ -1,6 +1,5 @@
 require('dotenv').config();
 const express = require('express');
-const pool = require('./db');
 const app = express();
 const requireAuth = require('./middleware/auth');
 const errorHandler = require('./middleware/errorHandler');

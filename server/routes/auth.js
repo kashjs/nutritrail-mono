@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const pool = require('../db');
 const validate = require('../middleware/validate');
 const { z } = require('zod');
+const { dailySignupsRateLimiter, dailyLoginsRateLimiter } = require('../middleware/rateLimit');
 
 const router = express.Router();
 
@@ -17,7 +18,7 @@ const loginSchema = z.object({
     password: z.string().min(1)
 });
 
-router.post('/register', validate(registerSchema), async (req, res) => {
+router.post('/register', dailySignupsRateLimiter, validate(registerSchema), async (req, res) => {
     const { email, password } = req.body;
     const passwordHash = await bcrypt.hash(password, 10);
 
@@ -29,23 +30,23 @@ router.post('/register', validate(registerSchema), async (req, res) => {
     res.status(201).json(result.rows[0]);
 });
 
-router.post('/login', validate(loginSchema), async (req, res) => {
-    const {email, password} = req.body;
+router.post('/login', dailyLoginsRateLimiter, validate(loginSchema), async (req, res) => {
+    const { email, password } = req.body;
 
     const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
     const user = result.rows[0];
     if (!user) {
-        return res.status(401).json({error: 'Invalid credentials'});
+        return res.status(401).json({ error: 'Invalid credentials' });
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password_hash);
     if (!passwordMatch) {
-        return res.status(401).json({error: 'Invalid credentials'});
+        return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    const token = jwt.sign({userId: user.id}, process.env.JWT_SECRET, {expiresIn: '1h'});
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    res.json({token})
+    res.json({ token })
 });
 
 module.exports = router;
