@@ -1,6 +1,6 @@
 const express = require('express');
 const pool = require('../db');
-const { getMealByIdForUser, getItemsByMealIds } = require('../queries/meals');
+const { getMealByIdForUser, getItemsByMealIds, insertMealItem, updateMealItem } = require('../queries/meals');
 const validate = require('../middleware/validate');
 const { z } = require('zod');
 
@@ -30,6 +30,7 @@ const createMealSchema = z.object({
 });
 
 const updateMealSchema = createMealSchema.omit({items: true}).partial();
+const updateMealItemSchema = mealItemSchema.partial();
 
 router.post('/meals', validate(createMealSchema), async (req, res) => {
     const {description, calories, protein_g, carbs_g, fat_g, meal_type, consumed_at, items} = req.body;
@@ -46,11 +47,8 @@ router.post('/meals', validate(createMealSchema), async (req, res) => {
         const savedItems = [];
         if (items && items.length) {
             for (const item of items) {
-                const itemResult = await client.query(
-                    `INSERT INTO meal_items (meal_id, description, quantity, unit, calories, protein_g, carbs_g, fat_g) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
-                    [meal.id, item.description, item.quantity, item.unit, item.calories, item.protein_g, item.carbs_g, item.fat_g]
-                );
-                savedItems.push(itemResult.rows[0]);
+                const itemResult = await insertMealItem(client, meal.id, item);
+                savedItems.push(itemResult);
             }
         }
 
@@ -155,6 +153,45 @@ router.delete('/meals/:id', async (req, res) => {
     if (deleteResult.rowCount === 0) {
         return res.status(404).json({error: 'No meal found'});
     }
+    res.status(204).send();
+});
+
+router.post('/meals/:mealId/items', validate(mealItemSchema), async (req, res) => {
+    const meal = await getMealByIdForUser(pool, req.params.mealId, req.user.userId);
+    if (!meal) {
+        return res.status(404).json({error: 'No meal found'});
+    }
+    const item = await insertMealItem(pool, meal.id, req.body);
+    res.status(201).json(item);
+});
+
+router.patch('/meals/:mealId/items/:itemId', validate(updateMealItemSchema), async (req, res) => {
+    const meal = await getMealByIdForUser(pool, req.params.mealId, req.user.userId);
+    if (!meal) {
+        return res.status(404).json({error: 'No meal found'});
+    }
+    const item = await updateMealItem(pool, meal.id, req.params.itemId, req.body);
+    if(item) {
+        res.json(item);
+    } else {
+       return res.status(404).json({error: 'No items found'}); 
+    }
+});
+
+router.delete('/meals/:mealId/items/:itemId', async (req, res) => {
+    const meal = await getMealByIdForUser(pool, req.params.mealId, req.user.userId);
+    if (!meal) {
+        return res.status(404).json({error: 'No meal found'});
+    }
+    const deleteResult = await pool.query(
+        `DELETE FROM meal_items WHERE meal_id = $1 AND id = $2`,
+        [req.params.mealId, req.params.itemId]
+    );
+
+    if(deleteResult.rowCount === 0) {
+        return res.status(404).json({error: 'No meal item found'});
+    }
+
     res.status(204).send();
 });
 
