@@ -14,6 +14,7 @@ const parsedItemSchema = z.object({
     protein_g: macroField,
     carbs_g: macroField,
     fat_g: macroField,
+    fiber_g: macroField
 });
 
 const parsedMealSchema = z.object({
@@ -23,6 +24,7 @@ const parsedMealSchema = z.object({
     protein_g: macroField,
     carbs_g: macroField,
     fat_g: macroField,
+    fiber_g: macroField,
     items: z.array(parsedItemSchema),
 });
 
@@ -33,7 +35,7 @@ async function parseMealText(text, previousResponseId) {
         inputToLLM.push({
             role: 'system',
             content: `You extract structured meal nutrition data from freeform text describing food someone ate.
-                    Break the meal into its component items, and estimate calories and macros (protein_g, carbs_g, fat_g)
+                    Break the meal into its component items, and estimate calories and macros (protein_g, carbs_g, fat_g, fiber_g)
                     per item and as totals for the whole meal when they are not stated explicitly. 
                     You may create an other_ingredients item to capture remaining nutrition from ingredients 
                     or components not otherwise represented by the main meal items. 

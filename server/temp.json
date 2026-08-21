@@ -1,37 +1,41 @@
 {
-    "description": "3 fried eggs, one slice of whole-wheat toast with butter, and an apple",
+    "description": "2 fried eggs with whole-wheat toast, butter, and an apple",
     "meal_type": "breakfast",
-    "calories": 489,
-    "protein_g": 24,
-    "carbs_g": 42,
-    "fat_g": 27,
+    "calories": 451,
+    "protein_g": 17.1,
+    "carbs_g": 44,
+    "fat_g": 24.3,
+    "fiber_g": 6.9,
     "items": [
         {
             "description": "Fried eggs",
-            "quantity": 3,
+            "quantity": 2,
             "unit": "large eggs",
-            "calories": 270,
-            "protein_g": 19.5,
-            "carbs_g": 1.5,
-            "fat_g": 21
+            "calories": 220,
+            "protein_g": 12.6,
+            "carbs_g": 1,
+            "fat_g": 18.5,
+            "fiber_g": 0
         },
         {
             "description": "Whole-wheat toast",
             "quantity": 1,
             "unit": "slice",
-            "calories": 90,
+            "calories": 100,
             "protein_g": 4,
-            "carbs_g": 15,
-            "fat_g": 1.5
+            "carbs_g": 18,
+            "fat_g": 1.5,
+            "fiber_g": 2.5
         },
         {
             "description": "Butter",
             "quantity": 1,
             "unit": "teaspoon",
-            "calories": 34,
+            "calories": 36,
             "protein_g": 0,
             "carbs_g": 0,
-            "fat_g": 4
+            "fat_g": 4.1,
+            "fiber_g": 0
         },
         {
             "description": "Apple",
@@ -40,8 +44,9 @@
             "calories": 95,
             "protein_g": 0.5,
             "carbs_g": 25,
-            "fat_g": 0.3
+            "fat_g": 0.3,
+            "fiber_g": 4.4
         }
     ],
-    "previous_response_id": "resp_04722d790b2dcd52006a88a046175487d0bfb381304cb12927"
+    "previous_response_id": "resp_0b86c787226e2bfa006a88a472ab6087d0afc994204b41ca29"
 }

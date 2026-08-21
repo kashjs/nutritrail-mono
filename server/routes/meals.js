@@ -17,6 +17,7 @@ const mealItemSchema = z.object({
     protein_g: macroField,
     carbs_g: macroField,
     fat_g: macroField,
+    fiber_g: macroField,
 });
 
 const createMealSchema = z.object({
@@ -25,6 +26,7 @@ const createMealSchema = z.object({
     protein_g: macroField,
     carbs_g: macroField,
     fat_g: macroField,
+    fiber_g: macroField,
     meal_type: z.enum(['breakfast', 'lunch', 'dinner', 'snack']),
     consumed_at: z.coerce.date(),
     items: z.array(mealItemSchema).optional(),
@@ -39,14 +41,14 @@ const parseMealTextSchema = z.object({
 });
 
 router.post('/meals', validate(createMealSchema), async (req, res) => {
-    const {description, calories, protein_g, carbs_g, fat_g, meal_type, consumed_at, items} = req.body;
+    const {description, calories, protein_g, carbs_g, fat_g, fiber_g, meal_type, consumed_at, items} = req.body;
 
     const client = await pool.connect();
     try {
         await client.query('BEGIN');
         const mealResult = await client.query(
-            `INSERT INTO meals (user_id, description, calories, protein_g, carbs_g, fat_g, meal_type, consumed_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
-            [req.user.userId, description, calories, protein_g, carbs_g, fat_g, meal_type, consumed_at]
+            `INSERT INTO meals (user_id, description, calories, protein_g, carbs_g, fat_g, fiber_g, meal_type, consumed_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+            [req.user.userId, description, calories, protein_g, carbs_g, fat_g, fiber_g, meal_type, consumed_at]
         );
         const meal = mealResult.rows[0];
 
@@ -118,8 +120,8 @@ router.get('/meals/:id', async (req, res) => {
 
 router.patch('/meals/:id', validate(updateMealSchema), async (req, res) => {
     const mealId = req.params.id;
-    const {description, calories, protein_g, carbs_g, fat_g, meal_type, consumed_at} = req.body;
-    const fields = {description, calories, protein_g, carbs_g, fat_g, meal_type, consumed_at};
+    const {description, calories, protein_g, carbs_g, fat_g, fiber_g, meal_type, consumed_at} = req.body;
+    const fields = {description, calories, protein_g, carbs_g, fat_g, fiber_g, meal_type, consumed_at};
 
     const setClauses = [];
     const params = [];
