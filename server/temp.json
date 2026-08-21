@@ -1,0 +1,28 @@
+{
+  "description": "Dal fry with jeera rice",
+  "meal_type": null,
+  "calories": 470,
+  "protein_g": 15,
+  "carbs_g": 75,
+  "fat_g": 15,
+  "items": [
+    {
+      "description": "Dal fry",
+      "quantity": 1,
+      "unit": "cup",
+      "calories": 220,
+      "protein_g": 10,
+      "carbs_g": 30,
+      "fat_g": 8
+    },
+    {
+      "description": "Jeera rice",
+      "quantity": 1,
+      "unit": "cup",
+      "calories": 250,
+      "protein_g": 5,
+      "carbs_g": 45,
+      "fat_g": 7
+    }
+  ]
+}

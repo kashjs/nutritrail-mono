@@ -3,6 +3,7 @@ const pool = require('../db');
 const { getMealByIdForUser, getItemsByMealIds, insertMealItem, updateMealItem } = require('../queries/meals');
 const validate = require('../middleware/validate');
 const { z } = require('zod');
+const { parseMealText } = require('../services/openai');
 
 const router = express.Router();
 
@@ -31,6 +32,10 @@ const createMealSchema = z.object({
 
 const updateMealSchema = createMealSchema.omit({items: true}).partial();
 const updateMealItemSchema = mealItemSchema.partial();
+
+const parseMealTextSchema = z.object({
+    text: z.string().min(20),
+});
 
 router.post('/meals', validate(createMealSchema), async (req, res) => {
     const {description, calories, protein_g, carbs_g, fat_g, meal_type, consumed_at, items} = req.body;
@@ -193,6 +198,11 @@ router.delete('/meals/:mealId/items/:itemId', async (req, res) => {
     }
 
     res.status(204).send();
+});
+
+router.post('/meals/parse', validate(parseMealTextSchema), async (req, res) => {
+    const parsed = await parseMealText(req.body.text);
+    res.json(parsed);
 });
 
 module.exports = router;
