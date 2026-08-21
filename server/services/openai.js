@@ -26,23 +26,29 @@ const parsedMealSchema = z.object({
     items: z.array(parsedItemSchema),
 });
 
-async function parseMealText(text) {
-    const response = await client.responses.parse({
-        model: 'gpt-5.6-luna',
-        input: [
-            {
-                role: 'system',
-                content: `You extract structured meal nutrition data from freeform text describing food someone ate.
+async function parseMealText(text, previousResponseId) {
+    const inputToLLM = [];
+
+    if (!previousResponseId) {
+        inputToLLM.push({
+            role: 'system',
+            content: `You extract structured meal nutrition data from freeform text describing food someone ate.
                     Break the meal into its component items, and estimate calories and macros (protein_g, carbs_g, fat_g)
                     per item and as totals for the whole meal when they are not stated explicitly. 
-                    You may create an other_ingredients item to capture remaining nutrition from ingredients or components not otherwise represented by the main meal items. 
+                    You may create an other_ingredients item to capture remaining nutrition from ingredients 
+                    or components not otherwise represented by the main meal items. 
                     Only use null for a value when you truly cannot produce a reasonable estimate.`
-            },
-            {
-                role: 'user',
-                content: text
-            }                        
-        ],
+        });
+    }
+    inputToLLM.push({
+        role: 'user',
+        content: text
+    });
+
+    const response = await client.responses.parse({
+        model: 'gpt-5.6-luna',
+        previous_response_id: previousResponseId ?? undefined,
+        input: inputToLLM,
         text: {
             format: zodTextFormat(parsedMealSchema, 'meal_parse'),
         }
@@ -52,7 +58,7 @@ async function parseMealText(text) {
         throw new Error('Model refused or failed to produce structured output');
     }
 
-    return response.output_parsed;
+    return { parsedResponse: response.output_parsed, responseId: response.id };
 }
 
 module.exports = { parseMealText };

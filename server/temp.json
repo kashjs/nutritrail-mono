@@ -1,28 +1,47 @@
 {
-  "description": "Dal fry with jeera rice",
-  "meal_type": null,
-  "calories": 470,
-  "protein_g": 15,
-  "carbs_g": 75,
-  "fat_g": 15,
-  "items": [
-    {
-      "description": "Dal fry",
-      "quantity": 1,
-      "unit": "cup",
-      "calories": 220,
-      "protein_g": 10,
-      "carbs_g": 30,
-      "fat_g": 8
-    },
-    {
-      "description": "Jeera rice",
-      "quantity": 1,
-      "unit": "cup",
-      "calories": 250,
-      "protein_g": 5,
-      "carbs_g": 45,
-      "fat_g": 7
-    }
-  ]
+    "description": "3 fried eggs, one slice of whole-wheat toast with butter, and an apple",
+    "meal_type": "breakfast",
+    "calories": 489,
+    "protein_g": 24,
+    "carbs_g": 42,
+    "fat_g": 27,
+    "items": [
+        {
+            "description": "Fried eggs",
+            "quantity": 3,
+            "unit": "large eggs",
+            "calories": 270,
+            "protein_g": 19.5,
+            "carbs_g": 1.5,
+            "fat_g": 21
+        },
+        {
+            "description": "Whole-wheat toast",
+            "quantity": 1,
+            "unit": "slice",
+            "calories": 90,
+            "protein_g": 4,
+            "carbs_g": 15,
+            "fat_g": 1.5
+        },
+        {
+            "description": "Butter",
+            "quantity": 1,
+            "unit": "teaspoon",
+            "calories": 34,
+            "protein_g": 0,
+            "carbs_g": 0,
+            "fat_g": 4
+        },
+        {
+            "description": "Apple",
+            "quantity": 1,
+            "unit": "medium",
+            "calories": 95,
+            "protein_g": 0.5,
+            "carbs_g": 25,
+            "fat_g": 0.3
+        }
+    ],
+    "previous_response_id": "resp_04722d790b2dcd52006a88a046175487d0bfb381304cb12927"
 }

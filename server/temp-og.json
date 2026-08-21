@@ -1,0 +1,38 @@
+{
+  "description": "2 fried eggs with a slice of buttered toast",
+  "meal_type": "breakfast",
+  "calories": 294,
+  "protein_g": 16,
+  "carbs_g": 16,
+  "fat_g": 19,
+  "items": [
+    {
+      "description": "Fried eggs",
+      "quantity": 2,
+      "unit": "large eggs",
+      "calories": 180,
+      "protein_g": 13,
+      "carbs_g": 1,
+      "fat_g": 14
+    },
+    {
+      "description": "Toast",
+      "quantity": 1,
+      "unit": "slice",
+      "calories": 80,
+      "protein_g": 3,
+      "carbs_g": 15,
+      "fat_g": 1
+    },
+    {
+      "description": "Butter",
+      "quantity": 1,
+      "unit": "teaspoon",
+      "calories": 34,
+      "protein_g": 0,
+      "carbs_g": 0,
+      "fat_g": 4
+    }
+  ],
+  "previous_response_id": "resp_04722d790b2dcd52006a889fe25c3c87d0aa9178503ad13c4f"
+}

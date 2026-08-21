@@ -34,7 +34,8 @@ const updateMealSchema = createMealSchema.omit({items: true}).partial();
 const updateMealItemSchema = mealItemSchema.partial();
 
 const parseMealTextSchema = z.object({
-    text: z.string().min(20),
+    text: z.string().min(2),
+    previous_response_id: z.string().optional(),
 });
 
 router.post('/meals', validate(createMealSchema), async (req, res) => {
@@ -201,8 +202,9 @@ router.delete('/meals/:mealId/items/:itemId', async (req, res) => {
 });
 
 router.post('/meals/parse', validate(parseMealTextSchema), async (req, res) => {
-    const parsed = await parseMealText(req.body.text);
-    res.json(parsed);
+    const {parsedResponse, responseId:previous_response_id} = await parseMealText(req.body.text, req.body.previous_response_id);
+
+    res.json({...parsedResponse, previous_response_id});
 });
 
 module.exports = router;
