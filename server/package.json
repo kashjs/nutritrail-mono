@@ -20,12 +20,17 @@
     "migrate": "node-pg-migrate"
   },
   "jest": {
-    "setupFiles": ["./tests/setup.js"],
-    "setupFilesAfterEnv": ["./tests/setupAfterEnv"],
+    "setupFiles": [
+      "./tests/setup.js"
+    ],
+    "setupFilesAfterEnv": [
+      "./tests/setupAfterEnv"
+    ],
     "testEnvironment": "node"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "express-rate-limit": "^8.6.2",
