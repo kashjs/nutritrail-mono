@@ -18,7 +18,7 @@ export default function Today() {
     if (!meals) return <p>Loading...</p>
 
     function onMealChange(updatedMeal) {
-        // TODO
+        setMeals(meals => meals.map(meal => meal.id === updatedMeal.id ? updatedMeal : meal));
     }
 
     return (
