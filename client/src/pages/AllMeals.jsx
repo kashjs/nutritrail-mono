@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import MealCard from '../components/MealCard';
 
-export default function Today() {
+export default function AllMeals() {
     const [meals, setMeals] = useState(null);
     const [error, setError] = useState(null);
 
@@ -22,15 +22,17 @@ export default function Today() {
     }
 
     return (
-        <ul>
-            {
-                meals.map(meal => {
-                    return <li key={meal.id}>
-                        <MealCard meal={meal} onSave={onMealChange}/>
-                    </li>
-                })
-            }
-        </ul>
+        <>            
+            <ul>
+                {
+                    meals.map(meal => {
+                        return <li key={meal.id}>
+                            <MealCard meal={meal} onSave={onMealChange}/>
+                        </li>
+                    })
+                }
+            </ul>
+        </>        
         
     );
 }

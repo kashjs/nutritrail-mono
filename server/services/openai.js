@@ -36,7 +36,7 @@ async function parseMealText(text, previousResponseId) {
             role: 'system',
             content: `You extract structured meal nutrition data from freeform text describing food someone ate.
                     Break the meal into its component items, and estimate calories and macros (protein_g, carbs_g, fat_g, fiber_g)
-                    per item and as totals for the whole meal when they are not stated explicitly. 
+                    per item and as totals for the whole meal when they are not stated explicitly. Estimate the meal_type based on time of the day.
                     You may create an other_ingredients item to capture remaining nutrition from ingredients 
                     or components not otherwise represented by the main meal items. 
                     Only use null for a value when you truly cannot produce a reasonable estimate.`

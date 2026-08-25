@@ -28,7 +28,7 @@ const createMealSchema = z.object({
     carbs_g: macroField,
     fat_g: macroField,
     fiber_g: macroField,
-    meal_type: z.enum(['breakfast', 'lunch', 'dinner', 'snack']),
+    meal_type: z.enum(['breakfast', 'lunch', 'dinner', 'snack']).nullable(),
     consumed_at: z.coerce.date(),
     items: z.array(mealItemSchema).optional(),
 });

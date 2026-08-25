@@ -1,5 +1,6 @@
 import { useState } from "react";
 import MealCard from "../components/MealCard";
+import { getLocalDateTimeString } from '../utils/DateTime';
 
 export default function AddMeal() {
     const [inputText, setInputText] = useState('');
@@ -25,6 +26,8 @@ export default function AddMeal() {
         })
             .then(response => response.json())
             .then(generatedMeal => {
+                generatedMeal.consumed_at = generatedMeal.consumed_at || getLocalDateTimeString();
+                generatedMeal.meal_type = generatedMeal.meal_type || 'breakfast';
                 setMeal(generatedMeal);
                 setInputText('');
             })
