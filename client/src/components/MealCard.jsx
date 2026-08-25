@@ -43,7 +43,7 @@ export default function MealCard({meal, onSave, onDeleteMeal}) {
             Authorization: `Bearer ${localStorage.getItem('token')}`
         };
 
-        await fetch(`http://localhost:3000/meals${draftMeal.id ? ('/' + draftMeal.id) : ''}`, {
+        let savedMeal = await fetch(`http://localhost:3000/meals${draftMeal.id ? ('/' + draftMeal.id) : ''}`, {
             method: draftMeal.id ? 'PATCH' : 'POST',
             headers,
             body: JSON.stringify({
@@ -57,7 +57,7 @@ export default function MealCard({meal, onSave, onDeleteMeal}) {
                 consumed_at: draftMeal.consumed_at,
                 items: draftMeal.items
             })
-        });
+        }).then(response => response.json());
 
         if(draftMeal.id) {
             await Promise.all(draftMeal.items.map(item => fetch(`http://localhost:3000/meals/${draftMeal.id}/items/${item.id}`, {
@@ -74,10 +74,14 @@ export default function MealCard({meal, onSave, onDeleteMeal}) {
                     fiber_g: item.fiber_g,
                 })
             })));
-        }
-        
 
-        onSave(draftMeal);
+            // PATCH /meals/:id doesn't return items, so carry over the
+            // already-saved item values from the draft instead.
+            savedMeal = { ...savedMeal, items: draftMeal.items };
+        }
+
+
+        onSave(savedMeal);
         setIsEditing(false);
         setIsSaving(false);
     }

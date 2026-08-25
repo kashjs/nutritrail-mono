@@ -1,11 +1,13 @@
 import { useState } from "react";
 import MealCard from "../components/MealCard";
 import { getLocalDateTimeString } from '../utils/DateTime';
+import { useNavigate } from 'react-router-dom';
 
 export default function AddMeal() {
     const [inputText, setInputText] = useState('');
     const [generatingMeal, setGeneratingMeal] = useState(false);
     const [meal, setMeal] = useState(null);
+    const navigate = useNavigate();
     
     function onDeleteMeal() {
         setMeal(null);
@@ -41,7 +43,7 @@ export default function AddMeal() {
     }
 
     function onMealSave() {
-        // TODO
+        navigate('/');
     }
 
     return (
