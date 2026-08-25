@@ -44,7 +44,7 @@ router.post('/login', dailyLoginsRateLimiter, validate(loginSchema), async (req,
         return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '24h' });
 
     res.json({ token })
 });

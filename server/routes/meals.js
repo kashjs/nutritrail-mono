@@ -85,7 +85,7 @@ router.get('/meals', async (req, res) => {
         mealsQueryParams.push(from, to);
     }
 
-    mealsQuery += ' ORDER BY consumed_at DESC';
+    mealsQuery += ' ORDER BY consumed_at DESC, id DESC';
     const mealResult = await pool.query(
         mealsQuery,
         mealsQueryParams
