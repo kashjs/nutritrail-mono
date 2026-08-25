@@ -21,13 +21,17 @@ export default function AllMeals() {
         setMeals(meals => meals.map(meal => meal.id === updatedMeal.id ? updatedMeal : meal));
     }
 
+    function onDeleteMeal(deletedMeal) {
+        setMeals(meals => meals.filter(meal => meal.id !== deletedMeal.id));        
+    }
+
     return (
         <>            
             <ul>
                 {
                     meals.map(meal => {
                         return <li key={meal.id}>
-                            <MealCard meal={meal} onSave={onMealChange}/>
+                            <MealCard meal={meal} onSave={onMealChange} onDeleteMeal={onDeleteMeal}/>
                         </li>
                     })
                 }

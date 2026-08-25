@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import MealDetail from './MealDetail';
 
-export default function MealCard({meal, onSave}) {
+export default function MealCard({meal, onSave, onDeleteMeal}) {
     const [isEditing, setIsEditing] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [draftMeal, setDraftMeal] = useState(meal);
@@ -14,6 +14,26 @@ export default function MealCard({meal, onSave}) {
     function cancelEdit() {
         setDraftMeal(meal);
         setIsEditing(false);
+    }
+
+    async function deleteMeal() {
+
+        if(draftMeal.id) {
+            const headers = {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            };
+            
+            await fetch(`http://localhost:3000/meals/${meal.id}`, {
+                method: 'DELETE',
+                headers
+            }).catch(error => {
+                console.log(error);
+            });            
+        }
+
+        onDeleteMeal(meal);
+        setDraftMeal(null);
     }
 
     async function handleUpdate() {
@@ -64,7 +84,7 @@ export default function MealCard({meal, onSave}) {
 
     return (
         <div>
-            <MealDetail meal={draftMeal} onChange={setDraftMeal} readOnly={!isEditing} />
+            {draftMeal && <MealDetail meal={draftMeal} onChange={setDraftMeal} readOnly={!isEditing} />}
             {isEditing ? (
                 <>
                     <button onClick={handleUpdate}>{isSaving ? "Saving..." : (draftMeal.id ? "Update" : "Add Meal") }</button>
@@ -75,8 +95,9 @@ export default function MealCard({meal, onSave}) {
                 )
             }
             {
-                draftMeal.id ? '' : <button onClick={handleUpdate}>{isSaving ? "Saving..." : "Add Meal" }</button>
+                draftMeal?.id ? '' : <button onClick={handleUpdate}>{isSaving ? "Saving..." : "Add Meal" }</button>
             }
+            <button onClick={deleteMeal}>Delete</button>
         </div>
     );
 

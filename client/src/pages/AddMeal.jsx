@@ -7,6 +7,10 @@ export default function AddMeal() {
     const [generatingMeal, setGeneratingMeal] = useState(false);
     const [meal, setMeal] = useState(null);
     
+    function onDeleteMeal() {
+        setMeal(null);
+    }
+
     async function generateMeal () {
         setMeal(null);
 
@@ -43,7 +47,7 @@ export default function AddMeal() {
     return (
         <>
             {generatingMeal && <p>Loading...</p>}
-            {meal && <MealCard meal={meal} onSave={onMealSave}/>}
+            {meal && <MealCard meal={meal} onSave={onMealSave} onDeleteMeal={onDeleteMeal}/>}
             <textarea onChange={e => setInputText(e.target.value)} value={inputText} />
             <button onClick={generateMeal}>Submit</button>
         </>
