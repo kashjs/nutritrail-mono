@@ -5,14 +5,16 @@ import AddMeal from './pages/AddMeal';
 import NavigationBar from './components/NavigationBar'
 
 export default function App() {
-    return(
-            <BrowserRouter>
-                <NavigationBar></NavigationBar>
-                <Routes>                    
+    return (
+        <BrowserRouter>
+            <NavigationBar></NavigationBar>
+            <main>
+                <Routes>
                     <Route path="/login" element={<Login />}></Route>
                     <Route path="/add-meal" element={<AddMeal />}></Route>
                     <Route path="/" element={<AllMeals />}></Route>
                 </Routes>
-            </BrowserRouter>
+            </main>
+        </BrowserRouter>
     )
 }

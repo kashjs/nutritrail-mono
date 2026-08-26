@@ -1,8 +1,11 @@
-const MEAL_TYPES = ['breakfast', 'lunch', 'dinner', 'snack'];
-const MACRO_FIELDS = ['calories', 'protein_g', 'carbs_g', 'fat_g', 'fiber_g'];
+import { MEAL_TYPES, MACRO_FIELDS } from '../utils/Constants';
+import { useId, Fragment } from 'react';
+import './MealDetail.css';
+
 import FormField from './FormField'
 
-export default function MealDetail({ meal, onChange, readOnly }) {
+export default function MealDetail({ meal, onChange }) {
+    const uid = useId();
     function handleFieldChange(field, value) {
         onChange({ ...meal, [field]: value })
     }
@@ -15,44 +18,40 @@ export default function MealDetail({ meal, onChange, readOnly }) {
     }
 
     return (
-        <>
-            <FormField readOnly={readOnly} value={meal.description} onChange={value => handleFieldChange('description', value)} /><br />
-            <span>meal type: </span><FormField readOnly={readOnly} type='select' options={MEAL_TYPES} value={meal.meal_type} onChange={value => handleFieldChange('meal_type', value)} /><br />
-            <span>consumed at: </span><FormField readOnly={readOnly} type='datetime-local' value={meal.consumed_at} onChange={value => handleFieldChange('consumed_at', value)} />
-            <p>Macro Fields</p>
-            <ul>
-                {
-                    MACRO_FIELDS.map(macroField => (
-                        <li key={macroField}>
-                            {macroField}: <FormField readOnly={readOnly} type="number" value={meal[macroField]} onChange={value => handleFieldChange(macroField, value)} />
-                        </li>
-                    ))
-                }
-            </ul>
-            <h3>Items</h3>
+        <form onSubmit={e => e.preventDefault()}>
+            <label htmlFor={`${uid}-meal-description`}>Meal Description: </label><FormField id={`${uid}-meal-description`} value={meal.description} onChange={value => handleFieldChange('description', value)} />
+            <label htmlFor={`${uid}-meal-meal_type`}>meal type: </label><FormField id={`${uid}-meal-meal_type`} type='select' options={MEAL_TYPES} value={meal.meal_type} onChange={value => handleFieldChange('meal_type', value)} />
+            <label htmlFor={`${uid}-meal-consumed_at`}>consumed at: </label><FormField id={`${uid}-meal-consumed_at`} type='datetime-local' value={meal.consumed_at} onChange={value => handleFieldChange('consumed_at', value)} />
+            {
+                MACRO_FIELDS.map((macroField, index) => (
+                    <Fragment key={macroField}>
+                        <label htmlFor={`${uid}-${index}-${macroField}`}>{macroField}: </label> <FormField id={`${uid}-${index}-${macroField}`} type="number" value={meal[macroField]} onChange={value => handleFieldChange(macroField, value)} />
+                    </Fragment>
+                ))
+            }
             <ul>
                 {
                     meal.items?.map((item, index) => (
                         <li key={index}>
-                            <p>Item {index + 1}: </p>
-                            <FormField readOnly={readOnly} value={item.description} onChange={value => itemChange(index, 'description', value)} /><br />
-                            <span>quantity: </span><FormField readOnly={readOnly} type="number" value={item.quantity} onChange={value => itemChange(index, 'quantity', value)} /><br />
-                            <span>unit: </span><FormField readOnly={readOnly} value={item.unit} onChange={value => itemChange(index, 'unit', value)} /><br />
-                            <p>Macro Fields</p>
-                            <ul>
+                            <fieldset>
+                                <legend>Item {index + 1}</legend>
+                                <label htmlFor={`${uid}-item-${index}-description`}>Description: </label><FormField id={`${uid}-item-${index}-description`} value={item.description} onChange={value => itemChange(index, 'description', value)} />
+                                <label htmlFor={`${uid}-item-${index}-quantity`}>quantity: </label><FormField id={`${uid}-item-${index}-quantity`} type="number" value={item.quantity} onChange={value => itemChange(index, 'quantity', value)} />
+                                <label htmlFor={`${uid}-item-${index}-unit`}>unit: </label><FormField id={`${uid}-item-${index}-unit`} value={item.unit} onChange={value => itemChange(index, 'unit', value)} />
                                 {
                                     MACRO_FIELDS.map(macroField => (
-                                        <li key={macroField}>
-                                            {macroField}: <FormField readOnly={readOnly} type="number" value={item[macroField]} onChange={value => itemChange(index, macroField, value)} />
-                                        </li>
+                                        <Fragment key={macroField} >
+                                            <label htmlFor={`${uid}-item-${index}-${macroField}`}>{macroField}: </label><FormField id={`${uid}-item-${index}-${macroField}`} type="number" value={item[macroField]} onChange={value => itemChange(index, macroField, value)} />
+                                        </Fragment>
                                     ))
                                 }
-                            </ul>
+                            </fieldset>
                         </li>
                     ))
                 }
             </ul>
-            <br />
-        </>
+
+
+        </form>
     )
 }

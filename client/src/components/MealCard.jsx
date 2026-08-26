@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import MealDetail from './MealDetail';
+import MealSummary from './MealSummary';
 
-export default function MealCard({meal, onSave, onDeleteMeal}) {
+export default function MealCard({ meal, onSave, onDeleteMeal }) {
     const [isEditing, setIsEditing] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [draftMeal, setDraftMeal] = useState(meal);
@@ -18,18 +19,18 @@ export default function MealCard({meal, onSave, onDeleteMeal}) {
 
     async function deleteMeal() {
 
-        if(draftMeal.id) {
+        if (draftMeal.id) {
             const headers = {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             };
-            
+
             await fetch(`http://localhost:3000/meals/${meal.id}`, {
                 method: 'DELETE',
                 headers
             }).catch(error => {
                 console.log(error);
-            });            
+            });
         }
 
         onDeleteMeal(meal);
@@ -59,7 +60,7 @@ export default function MealCard({meal, onSave, onDeleteMeal}) {
             })
         }).then(response => response.json());
 
-        if(draftMeal.id) {
+        if (draftMeal.id) {
             await Promise.all(draftMeal.items.map(item => fetch(`http://localhost:3000/meals/${draftMeal.id}/items/${item.id}`, {
                 method: 'PATCH',
                 headers,
@@ -88,18 +89,18 @@ export default function MealCard({meal, onSave, onDeleteMeal}) {
 
     return (
         <div>
-            {draftMeal && <MealDetail meal={draftMeal} onChange={setDraftMeal} readOnly={!isEditing} />}
+            {draftMeal && (isEditing ? <MealDetail meal={draftMeal} onChange={setDraftMeal} /> : <MealSummary meal={draftMeal} />)}
             {isEditing ? (
                 <>
-                    <button onClick={handleUpdate}>{isSaving ? "Saving..." : (draftMeal.id ? "Update" : "Add Meal") }</button>
+                    <button onClick={handleUpdate}>{isSaving ? "Saving..." : (draftMeal.id ? "Update" : "Add Meal")}</button>
                     <button onClick={cancelEdit}>Cancel</button>
                 </>
-                ) : (
-                    <button onClick={startEdit}>Edit</button>
-                )
+            ) : (
+                <button onClick={startEdit}>Edit</button>
+            )
             }
             {
-                draftMeal?.id ? '' : <button onClick={handleUpdate}>{isSaving ? "Saving..." : "Add Meal" }</button>
+                draftMeal?.id ? '' : <button onClick={handleUpdate}>{isSaving ? "Saving..." : "Add Meal"}</button>
             }
             <button onClick={deleteMeal}>Delete</button>
         </div>

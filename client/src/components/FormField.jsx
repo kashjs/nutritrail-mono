@@ -1,4 +1,4 @@
-export default function FormField({readOnly, value, onChange, type = 'text', options}) {
+export default function FormField({ id, value, onChange, type = 'text', options }) {
     const getValidNumber = (value) => {
         if (type === 'number') {
             return value === '' ? null : Number(value);
@@ -8,13 +8,13 @@ export default function FormField({readOnly, value, onChange, type = 'text', opt
 
     if (type === 'select') {
         return (
-            <select value={value} onChange={e => onChange(e.target.value)} disabled={readOnly}>
+            <select id={id} value={value} onChange={e => onChange(e.target.value)}>
                 {options.map(option => <option key={option} value={option}>{option}</option>)}
             </select>
         );
     }
 
     return (
-        <input type={type} value={value ?? ''} onChange={e => onChange(getValidNumber(e.target.value))} disabled={readOnly}/>
+        <input id={id} type={type} value={value ?? ''} onChange={e => onChange(getValidNumber(e.target.value))} />
     )
 }
