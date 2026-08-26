@@ -1,17 +1,17 @@
 :root {
 
     /* colors */
-    --color-bg:  #f6feff;
+    --color-bg: #f6feff;
     --color-surface: #e6fdff;
     --color-border: #d7eef0;
     --color-text: #394242;
-    --color-text-muted:#7c8f8f;
+    --color-text-muted: #7c8f8f;
     --color-primary: #1bdff1;
     --color-primary-hover: #17cede;
     --color-secondary: #b7cdcd;
     --color-secondary-hover: #a9bfbf;
-    --color-danger:  #ff9e9e;
-    --color-danger-hover:  #e68f8f;
+    --color-danger: #ff9e9e;
+    --color-danger-hover: #e68f8f;
 
     /* spacing */
     --space-0: 0px;
@@ -38,38 +38,4 @@
     --radius-sm: 0.25rem;
     --radius-md: 0.5rem;
     --radius-lg: 0.75rem;
-}
-
-*, *::before, *::after {
-    box-sizing: border-box;
-}
-
-* {
-    margin: 0;
-}
-
-html {
-    -webkit-font-smoothing: antialiased;
-}
-
-body {
-    font-family: var(--font-family);
-    font-size: var(--font-size-base);
-    color: var(--color-text);
-    background-color: var(--color-bg);
-    line-height: 1.5;
-}
-
-img, picture, video, canvas, svg {
-    display: block;
-    max-width: 100%;
-}
-
-input, button, textarea, select {
-    font: inherit;
-    color: inherit;
-}
-
-button {
-    cursor: pointer;
 }
