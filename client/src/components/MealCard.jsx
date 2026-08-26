@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import MealDetail from './MealDetail';
 import MealSummary from './MealSummary';
+import './MealCard.css';
 
 export default function MealCard({ meal, onSave, onDeleteMeal }) {
     const [isEditing, setIsEditing] = useState(false);
@@ -88,22 +89,20 @@ export default function MealCard({ meal, onSave, onDeleteMeal }) {
     }
 
     return (
-        <div>
+        <article>
             {draftMeal && (isEditing ? <MealDetail meal={draftMeal} onChange={setDraftMeal} /> : <MealSummary meal={draftMeal} />)}
-            {isEditing ? (
-                <>
-                    <button onClick={handleUpdate}>{isSaving ? "Saving..." : (draftMeal.id ? "Update" : "Add Meal")}</button>
-                    <button onClick={cancelEdit}>Cancel</button>
-                </>
-            ) : (
-                <button onClick={startEdit}>Edit</button>
-            )
-            }
-            {
-                draftMeal?.id ? '' : <button onClick={handleUpdate}>{isSaving ? "Saving..." : "Add Meal"}</button>
-            }
-            <button onClick={deleteMeal}>Delete</button>
-        </div>
+            <div className="button-row">
+                {
+                    !isEditing && !draftMeal?.id && <button type="button" className="button-primary" onClick={handleUpdate}>{isSaving ? "Saving..." : "Add Meal"}</button>
+                }
+                {
+                    isEditing && <button type="button" className="button-primary" onClick={handleUpdate}>{isSaving ? "Saving..." : (draftMeal.id ? "Update" : "Add Meal")}</button>
+                }
+                <button type="button" className="button-danger" onClick={deleteMeal}>Delete</button>
+                {!isEditing && <button type="button" className="button-secondary" onClick={startEdit}>Edit</button>}
+                {isEditing && <button type="button" className="button-secondary" onClick={cancelEdit}>Cancel</button>}
+            </div>
+        </article>
     );
 
 }

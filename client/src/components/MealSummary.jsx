@@ -1,48 +1,89 @@
 import { Fragment } from 'react';
+import './MealSummary.css';
 
 export default function MealSummary({ meal }) {
     return (
-        <div>
-            <p>{meal.description}</p>
-            <dl>
-                <dt>Meal type</dt>
-                <dd>{meal.meal_type}</dd>
-                <dt>Consumed at</dt>
-                <dd>{meal.consumed_at}</dd>
-                <dt>Calories</dt>
-                <dd>{meal.calories}</dd>
-                <dt>Protein</dt>
-                <dd>{meal.protein_g}</dd>
-                <dt>Carbs</dt>
-                <dd>{meal.carbs_g}</dd>
-                <dt>Fat</dt>
-                <dd>{meal.fat_g}</dd>
-                <dt>Fiber</dt>
-                <dd>{meal.fiber_g}</dd>
-            </dl>
-            {
-                meal.items?.map((item, index) => (
-                    <Fragment key={item.id ?? index}>
-                        <p>{item.description}</p>
-                        <dl>
-                            <dt>Quantity</dt>
-                            <dd>{item.quantity}</dd>
-                            <dt>Unit</dt>
-                            <dd>{item.unit}</dd>
-                            <dt>Calories</dt>
-                            <dd>{item.calories}</dd>
-                            <dt>Protein</dt>
-                            <dd>{item.protein_g}</dd>
-                            <dt>Carbs</dt>
-                            <dd>{item.carbs_g}</dd>
-                            <dt>Fat</dt>
-                            <dd>{item.fat_g}</dd>
-                            <dt>Fiber</dt>
-                            <dd>{item.fiber_g}</dd>
-                        </dl>
-                    </Fragment>
-                ))
-            }
+        <div className="meal">
+            <p className="meal-description">{meal.description}</p>
+            <div>
+                <dl>
+                    <div>
+                        <dt>Consumed at</dt>
+                        <dd> - {meal.consumed_at}</dd>
+                    </div>
+                </dl>
+            </div>
+            <div className="meal-columns">
+                <dl>
+                    <div>
+                        <dt>Meal type</dt>
+                        <dd> - {meal.meal_type}</dd>
+                    </div>
+                    <div>
+                        <dt>Calories</dt>
+                        <dd> - {meal.calories}</dd>
+                    </div>
+                    <div>
+                        <dt>Protein</dt>
+                        <dd> - {meal.protein_g}g</dd>
+                    </div>
+                </dl>
+                <dl>
+                    <div>
+                        <dt>Carbs</dt>
+                        <dd> - {meal.carbs_g}g</dd>
+                    </div>
+                    <div>
+                        <dt>Fat</dt>
+                        <dd> - {meal.fat_g}g</dd>
+                    </div>
+                    <div>
+                        <dt>Fiber</dt>
+                        <dd> - {meal.fiber_g}g</dd>
+                    </div>
+
+                </dl>
+            </div>
+            <section className="meal-items">
+                {
+                    meal.items?.map((item, index) => (
+                        <div className="meal-item" key={item.id ?? index}>
+                            <p className="meal-item-description">{item.description}</p>
+                            <dl>
+                                <div>
+                                    <dt>Quantity</dt>
+                                    <dd> - {item.quantity}</dd>
+                                </div>
+                                <div>
+                                    <dt>Unit</dt>
+                                    <dd> - {item.unit}</dd>
+                                </div>
+
+                                <div>
+                                    <dt>Calories</dt>
+                                    <dd> - {item.calories}</dd>
+                                </div>
+                                <div>
+                                    <dt>Protein</dt>
+                                    <dd> - {item.protein_g}g</dd>
+                                </div>
+                                <div>
+                                    <dt>Carbs</dt>
+                                    <dd> - {item.carbs_g}g</dd>
+                                </div>
+                                <div>
+                                    <dt>Fat</dt>
+                                    <dd> - {item.fat_g}g</dd>
+                                </div>
+                                <div>
+                                    <dt>Fiber</dt>
+                                    <dd> - {item.fiber_g}g</dd>
+                                </div>
+                            </dl>
+                        </div>
+                    ))
+                }
+            </section>
         </div>
     );
 }

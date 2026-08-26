@@ -7,7 +7,7 @@ export default function AllMeals() {
 
     useEffect(() => {
         fetch('http://localhost:3000/meals', {
-            headers: { Authorization: `Bearer ${localStorage.getItem('token')}`}
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         })
             .then(response => response.json())
             .then(setMeals)
@@ -22,21 +22,21 @@ export default function AllMeals() {
     }
 
     function onDeleteMeal(deletedMeal) {
-        setMeals(meals => meals.filter(meal => meal.id !== deletedMeal.id));        
+        setMeals(meals => meals.filter(meal => meal.id !== deletedMeal.id));
     }
 
     return (
-        <>            
-            <ul>
+        <>
+            <ul className="list-unstyled">
                 {
                     meals.map(meal => {
                         return <li key={meal.id}>
-                            <MealCard meal={meal} onSave={onMealChange} onDeleteMeal={onDeleteMeal}/>
+                            <MealCard meal={meal} onSave={onMealChange} onDeleteMeal={onDeleteMeal} />
                         </li>
                     })
                 }
             </ul>
-        </>        
-        
+        </>
+
     );
 }
