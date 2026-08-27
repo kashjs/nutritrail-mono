@@ -2,6 +2,7 @@ import { useState } from "react";
 import MealCard from "../components/MealCard";
 import { getLocalDateTimeString } from '../utils/DateTime';
 import { useNavigate } from 'react-router-dom';
+import './AddMeal.css';
 
 export default function AddMeal() {
     const [inputText, setInputText] = useState('');
@@ -54,7 +55,7 @@ export default function AddMeal() {
                 {generatingMeal && <p>Loading...</p>}
                 {meal && <MealCard meal={meal} onSave={onMealSave} onDeleteMeal={onDeleteMeal} />}
                 <form onSubmit={generateMeal}>
-                    <input type="text" placeholder={
+                    <input className="add-meal-input" type="text" placeholder={
                         meal
                             ? "Add a correction, for example: \"it was three eggs not two\""
                             : "For example: \"two eggs with white bread\""

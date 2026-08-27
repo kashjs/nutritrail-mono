@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import MealCard from '../components/MealCard';
+import { useNavigate } from 'react-router-dom';
 import './AllMeals.css';
 
 export default function AllMeals() {
     const [meals, setMeals] = useState(null);
     const [error, setError] = useState(null);
     const [loadingMeals, setLoadingMeals] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         setLoadingMeals(true);
@@ -30,7 +32,12 @@ export default function AllMeals() {
 
     return (
         <div className="all-meals-page">
-            <h1>All Meals</h1>
+            <div className="heading-bar">
+                <h1>All Meals</h1>
+                <button className="button-primary" onClick={() => navigate('/add-meal')}>
+                    Add Meal
+                </button>
+            </div>            
             {loadingMeals && <p>Loading...</p>}
             {error && <p>Error loading meals</p>}
             {meals &&

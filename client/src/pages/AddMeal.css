@@ -1,0 +1,7 @@
+.add-meals-page {
+    max-width: var(--page-content-width-md);
+}
+
+.add-meals-page .add-meal-input {
+    min-height: 50px;
+}

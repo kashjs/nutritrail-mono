@@ -1,5 +1,15 @@
+.all-meals-page {
+    max-width: var(--page-content-width-md);
+}
+
 .all-meals-page .meals-list {
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
+}
+
+.all-meals-page .heading-bar {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    padding: var(--space-3) 0;
 }
