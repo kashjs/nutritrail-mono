@@ -8,12 +8,12 @@ export default function AddMeal() {
     const [generatingMeal, setGeneratingMeal] = useState(false);
     const [meal, setMeal] = useState(null);
     const navigate = useNavigate();
-    
+
     function onDeleteMeal() {
         setMeal(null);
     }
 
-    async function generateMeal () {
+    async function generateMeal() {
         setMeal(null);
 
         setGeneratingMeal(true);
@@ -38,7 +38,7 @@ export default function AddMeal() {
                 setInputText('');
             })
             .catch(error => console.log(error));
-        
+
         setGeneratingMeal(false);
     }
 
@@ -47,11 +47,12 @@ export default function AddMeal() {
     }
 
     return (
-        <>
+        <div className="add-meals-page">
+            <h1>Add Meals</h1>
             {generatingMeal && <p>Loading...</p>}
-            {meal && <MealCard meal={meal} onSave={onMealSave} onDeleteMeal={onDeleteMeal}/>}
+            {meal && <MealCard meal={meal} onSave={onMealSave} onDeleteMeal={onDeleteMeal} />}
             <textarea onChange={e => setInputText(e.target.value)} value={inputText} />
             <button onClick={generateMeal}>Submit</button>
-        </>
+        </div>
     )
 }

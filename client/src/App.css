@@ -1,0 +1,18 @@
+#root {
+    display: grid;
+    grid-template-areas:
+        "nav"
+        "main";
+    grid-template-rows: auto 1fr;
+    height: 100vh;
+}
+
+.navigation-content {
+    grid-area: nav;
+}
+
+.main-content {
+    grid-area: main;
+    min-height: 0;
+    overflow-y: auto;
+}
