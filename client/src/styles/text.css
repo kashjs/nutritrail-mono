@@ -1,0 +1,7 @@
+.text-danger {
+    color: var(--color-text-danger);
+}
+
+.text-muted {
+    color: var(--color-text-muted);
+}

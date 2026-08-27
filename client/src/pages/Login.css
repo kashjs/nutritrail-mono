@@ -15,5 +15,9 @@
     box-shadow: var(--shadow-sm);
     display: flex;
     flex-direction: column;
-    gap: var(--space-3);
+    gap: var(--space-4);
+}
+
+.login-page .login-card form button {
+    margin-top: var(--space-4);
 }

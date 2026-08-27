@@ -37,7 +37,7 @@ export default function AllMeals() {
                 <button className="button-primary" onClick={() => navigate('/add-meal')}>
                     Add Meal
                 </button>
-            </div>            
+            </div>
             {loadingMeals && <p>Loading...</p>}
             {error && <p>Error loading meals</p>}
             {meals &&

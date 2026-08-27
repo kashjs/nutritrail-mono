@@ -10,7 +10,7 @@ const router = express.Router();
 
 const registerSchema = z.object({
     email: z.email(),
-    password: z.string().min(8)
+    password: z.string().min(7)
 });
 
 const loginSchema = z.object({

@@ -1,0 +1,48 @@
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+label {
+    display: block;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+}
+
+form label,
+form button {
+    margin-top: var(--space-3);
+}
+
+form label:first-child {
+    margin-top: 0;
+}
+
+input,
+select {
+    padding: var(--space-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background-color: white;
+    font-size: var(--font-size-base);
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-primary) 25%, transparent);
+}
+
+fieldset {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+}
+
+legend {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    padding: 0 var(--space-2);
+}
