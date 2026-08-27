@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import MealCard from '../components/MealCard';
+import './AllMeals.css';
 
 export default function AllMeals() {
     const [meals, setMeals] = useState(null);
@@ -33,7 +34,7 @@ export default function AllMeals() {
             {loadingMeals && <p>Loading...</p>}
             {error && <p>Error loading meals</p>}
             {meals &&
-                <ul className="list-unstyled">
+                <ul className="list-unstyled meals-list">
                     {
                         meals.map(meal => {
                             return <li key={meal.id}>

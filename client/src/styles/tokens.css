@@ -1,5 +1,7 @@
 :root {
 
+    /* breakpoint-md: 768px — keep media queries in sync with this */
+
     /* colors */
     --color-bg: #f6feff;
     --color-surface: #e6fdff;
@@ -38,4 +40,12 @@
     --radius-sm: 0.25rem;
     --radius-md: 0.5rem;
     --radius-lg: 0.75rem;
+
+    /* shadows */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+    /* interactive elements min width */
+    --interactive-element-min-width: 50px;
+    --interactive-element-min-height: 50px;
 }

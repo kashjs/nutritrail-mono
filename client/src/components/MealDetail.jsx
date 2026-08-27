@@ -29,7 +29,7 @@ export default function MealDetail({ meal, onChange }) {
                     </Fragment>
                 ))
             }
-            <ul>
+            <ul className="list-unstyled">
                 {
                     meal.items?.map((item, index) => (
                         <li key={index}>

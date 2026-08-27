@@ -13,7 +13,8 @@ export default function AddMeal() {
         setMeal(null);
     }
 
-    async function generateMeal() {
+    async function generateMeal(e) {
+        e.preventDefault();
         setMeal(null);
 
         setGeneratingMeal(true);
@@ -49,10 +50,18 @@ export default function AddMeal() {
     return (
         <div className="add-meals-page">
             <h1>Add Meals</h1>
-            {generatingMeal && <p>Loading...</p>}
-            {meal && <MealCard meal={meal} onSave={onMealSave} onDeleteMeal={onDeleteMeal} />}
-            <textarea onChange={e => setInputText(e.target.value)} value={inputText} />
-            <button onClick={generateMeal}>Submit</button>
+            <div className="flex-columns gap-4 mt3">
+                {generatingMeal && <p>Loading...</p>}
+                {meal && <MealCard meal={meal} onSave={onMealSave} onDeleteMeal={onDeleteMeal} />}
+                <form onSubmit={generateMeal}>
+                    <input type="text" placeholder={
+                        meal
+                            ? "Add a correction, for example: \"it was three eggs not two\""
+                            : "For example: \"two eggs with white bread\""
+                    } onChange={e => setInputText(e.target.value)} value={inputText} />
+                    <button className="button-primary">Submit</button>
+                </form>
+            </div>
         </div>
     )
 }

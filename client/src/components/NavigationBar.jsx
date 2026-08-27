@@ -3,7 +3,7 @@ import './NavigationBar.css';
 
 export default function NavigationBar() {
     return (
-        <nav>
+        <nav className="main-navigation-bar">
             <Link to="/add-meal">Add Meal</Link>
             <Link to="/">All Meals</Link>
         </nav>

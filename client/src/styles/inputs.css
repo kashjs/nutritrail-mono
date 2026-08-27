@@ -1,0 +1,13 @@
+input,
+textarea,
+select {
+    width: 100%;
+}
+
+@media(max-width: 768px) {
+    input,
+    textarea,
+    select {
+        min-height: var(--interactive-element-min-height);
+    }
+}

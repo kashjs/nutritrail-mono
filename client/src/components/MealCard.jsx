@@ -89,7 +89,7 @@ export default function MealCard({ meal, onSave, onDeleteMeal }) {
     }
 
     return (
-        <article>
+        <article className="meal-card">
             {draftMeal && (isEditing ? <MealDetail meal={draftMeal} onChange={setDraftMeal} /> : <MealSummary meal={draftMeal} />)}
             <div className="button-row">
                 {
