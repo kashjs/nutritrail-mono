@@ -1,0 +1,32 @@
+.overview-page {
+    max-width: var(--page-content-width-md);
+}
+
+.overview-page .heading-bar {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    padding: var(--space-3) 0;
+}
+
+.overview-page .summary-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+}
+
+.overview-page .todays-meals {
+    margin-top: var(--space-4);
+}
+
+.overview-page .meals-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+@media(max-width: 768px) {
+    .overview-page .summary-cards {
+        grid-template-columns: 1fr;
+    }
+}

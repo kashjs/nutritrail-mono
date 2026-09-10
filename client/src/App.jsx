@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
+import Overview from './pages/Overview';
 import AllMeals from './pages/AllMeals';
 import AddMeal from './pages/AddMeal';
 import NavigationBar from './components/NavigationBar'
@@ -17,7 +18,8 @@ export default function App() {
                     <Route path="/login" element={<Login />}></Route>
                     <Route element={<RequireAuth />}>
                         <Route path="/add-meal" element={<AddMeal />}></Route>
-                        <Route path="/" element={<AllMeals />}></Route>
+                        <Route path="/meals" element={<AllMeals />}></Route>
+                        <Route path="/" element={<Overview />}></Route>
                     </Route>
                     <Route path="*" element={<p>Page not found</p>}></Route>
                 </Routes>

@@ -1,0 +1,55 @@
+.summary-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    height: 100%;
+}
+
+.summary-card .summary-card-header h2 {
+    font-size: var(--font-size-base);
+}
+
+.summary-card .summary-card-subtitle {
+    font-size: var(--font-size-xs);
+}
+
+.summary-card .summary-card-calories {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+}
+
+.summary-card .summary-card-calories-value {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+}
+
+.summary-card .summary-card-calories-unit {
+    font-size: var(--font-size-xs);
+}
+
+.summary-card .summary-card-macros {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-2) var(--space-3);
+}
+
+.summary-card .summary-card-macros dt {
+    font-size: var(--font-size-xs);
+}
+
+.summary-card .summary-card-macros dd {
+    margin: 0;
+}
+
+.summary-card .summary-card-footer {
+    margin-top: auto;
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-border);
+    font-size: var(--font-size-xs);
+}

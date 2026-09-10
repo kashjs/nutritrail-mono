@@ -18,8 +18,9 @@ export default function NavigationBar() {
         <nav className="main-navigation-bar">
             {!isLoginPage &&
                 <>
+                    <Link to="/">Overview</Link>
                     <Link to="/add-meal">Add Meal</Link>
-                    <Link to="/">All Meals</Link>
+                    <Link to="/meals">All Meals</Link>
                     <button type="button" className="button-secondary" onClick={handleLogout}>Log out</button>
                 </>
             }
