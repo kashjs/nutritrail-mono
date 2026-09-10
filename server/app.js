@@ -7,6 +7,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
 const authRoutes = require('./routes/auth');
+const meRoutes = require('./routes/me');
 const mealsRoutes = require('./routes/meals');
 
 app.use(helmet());
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(authRoutes);
 app.use(requireAuth);
+app.use(meRoutes);
 app.use(mealsRoutes)
 app.use(errorHandler);
 

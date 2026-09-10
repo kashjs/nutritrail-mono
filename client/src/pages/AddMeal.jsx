@@ -19,14 +19,11 @@ export default function AddMeal() {
         setMeal(null);
 
         setGeneratingMeal(true);
-        const headers = {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-        };
 
         await fetch('http://localhost:3000/meals/parse', {
             method: 'POST',
-            headers,
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 text: inputText,
                 previous_response_id: meal?.previous_response_id

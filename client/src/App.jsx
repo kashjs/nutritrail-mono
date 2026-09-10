@@ -4,6 +4,7 @@ import AllMeals from './pages/AllMeals';
 import AddMeal from './pages/AddMeal';
 import NavigationBar from './components/NavigationBar'
 import './App.css';
+import RequireAuth from './components/RequireAuth'
 
 export default function App() {
     return (
@@ -14,9 +15,13 @@ export default function App() {
             <main className="main-content">
                 <Routes>
                     <Route path="/login" element={<Login />}></Route>
-                    <Route path="/add-meal" element={<AddMeal />}></Route>
-                    <Route path="/" element={<AllMeals />}></Route>
+                    <Route element={<RequireAuth />}>
+                        <Route path="/add-meal" element={<AddMeal />}></Route>
+                        <Route path="/" element={<AllMeals />}></Route>
+                    </Route>
+                    <Route path="*" element={<p>Page not found</p>}></Route>
                 </Routes>
+
             </main>
         </BrowserRouter>
     )

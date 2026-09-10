@@ -12,7 +12,7 @@ export default function AllMeals() {
     useEffect(() => {
         setLoadingMeals(true);
         fetch('http://localhost:3000/meals', {
-            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+            credentials: 'include'
         })
             .then(response => response.json())
             .then(setMeals)

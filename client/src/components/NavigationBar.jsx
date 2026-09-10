@@ -6,8 +6,11 @@ export default function NavigationBar() {
     const location = useLocation();
     const isLoginPage = location.pathname === '/login';
 
-    function logout() {
-        localStorage.removeItem('token');
+    const handleLogout = async () => {
+        await fetch('http://localhost:3000/logout', {
+            method: 'POST',
+            credentials: 'include'
+        });
         navigate('/login');
     }
 
@@ -17,7 +20,7 @@ export default function NavigationBar() {
                 <>
                     <Link to="/add-meal">Add Meal</Link>
                     <Link to="/">All Meals</Link>
-                    <button type="button" className="button-secondary" onClick={logout}>Log out</button>
+                    <button type="button" className="button-secondary" onClick={handleLogout}>Log out</button>
                 </>
             }
         </nav>

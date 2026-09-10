@@ -21,14 +21,9 @@ export default function MealCard({ meal, onSave, onDeleteMeal }) {
     async function deleteMeal() {
 
         if (draftMeal.id) {
-            const headers = {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-            };
-
             await fetch(`http://localhost:3000/meals/${meal.id}`, {
                 method: 'DELETE',
-                headers
+                credentials: 'include'
             }).catch(error => {
                 console.log(error);
             });
@@ -40,13 +35,11 @@ export default function MealCard({ meal, onSave, onDeleteMeal }) {
 
     async function handleUpdate() {
         setIsSaving(true);
-        const headers = {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-        };
+        const headers = { 'Content-Type': 'application/json' };
 
         let savedMeal = await fetch(`http://localhost:3000/meals${draftMeal.id ? ('/' + draftMeal.id) : ''}`, {
             method: draftMeal.id ? 'PATCH' : 'POST',
+            credentials: 'include',
             headers,
             body: JSON.stringify({
                 description: draftMeal.description,
@@ -64,6 +57,7 @@ export default function MealCard({ meal, onSave, onDeleteMeal }) {
         if (draftMeal.id) {
             await Promise.all(draftMeal.items.map(item => fetch(`http://localhost:3000/meals/${draftMeal.id}/items/${item.id}`, {
                 method: 'PATCH',
+                credentials: 'include',
                 headers,
                 body: JSON.stringify({
                     description: item.description,

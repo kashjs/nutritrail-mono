@@ -31,6 +31,7 @@ export default function Login() {
 
         let response = await fetch(`http://localhost:3000/${endpoint}`, {
             method: 'POST',
+            credentials: 'include',
             headers,
             body
         });
@@ -43,6 +44,7 @@ export default function Login() {
         if (isRegisterMode) {
             response = await fetch(`http://localhost:3000/login`, {
                 method: 'POST',
+                credentials: 'include',
                 headers,
                 body
             });
@@ -56,7 +58,6 @@ export default function Login() {
 
 
         const data = await response.json();
-        localStorage.setItem('token', data.token);
         navigate('/');
     }
 
