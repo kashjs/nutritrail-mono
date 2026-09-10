@@ -29,7 +29,7 @@ export default function Login() {
             return;
         }
 
-        let response = await fetch(`http://localhost:3000/${endpoint}`, {
+        let response = await fetch(`/api/${endpoint}`, {
             method: 'POST',
             credentials: 'include',
             headers,
@@ -42,7 +42,7 @@ export default function Login() {
         }
 
         if (isRegisterMode) {
-            response = await fetch(`http://localhost:3000/login`, {
+            response = await fetch(`/api/login`, {
                 method: 'POST',
                 credentials: 'include',
                 headers,

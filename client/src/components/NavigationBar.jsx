@@ -7,7 +7,7 @@ export default function NavigationBar() {
     const isLoginPage = location.pathname === '/login';
 
     const handleLogout = async () => {
-        await fetch('http://localhost:3000/logout', {
+        await fetch('/api/logout', {
             method: 'POST',
             credentials: 'include'
         });

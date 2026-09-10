@@ -11,7 +11,7 @@ export default function AllMeals() {
 
     useEffect(() => {
         setLoadingMeals(true);
-        fetch('http://localhost:3000/meals', {
+        fetch('/api/meals', {
             credentials: 'include'
         })
             .then(response => response.json())

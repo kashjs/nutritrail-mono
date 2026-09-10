@@ -20,7 +20,7 @@ export default function AddMeal() {
 
         setGeneratingMeal(true);
 
-        await fetch('http://localhost:3000/meals/parse', {
+        await fetch('/api/meals/parse', {
             method: 'POST',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },

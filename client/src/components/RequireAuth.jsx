@@ -6,7 +6,7 @@ export default function RequireAuth() {
     const [status, setStatus] = useState('checking'); // 'checking' | 'authed' | 'anon'
 
     useEffect(() => {
-        fetch('http://localhost:3000/me', { credentials: 'include' })
+        fetch('/api/me', { credentials: 'include' })
             .then(res => setStatus(res.ok ? 'authed' : 'anon'))
             .catch(() => setStatus('anon'));
     }, []);

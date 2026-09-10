@@ -8,6 +8,7 @@
 
 # Client dependencies
 /client/node_modules/
+/client/dist/
 
 # Other files
 .DS_Store

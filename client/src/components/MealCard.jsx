@@ -21,7 +21,7 @@ export default function MealCard({ meal, onSave, onDeleteMeal }) {
     async function deleteMeal() {
 
         if (draftMeal.id) {
-            await fetch(`http://localhost:3000/meals/${meal.id}`, {
+            await fetch(`/api/meals/${meal.id}`, {
                 method: 'DELETE',
                 credentials: 'include'
             }).catch(error => {
@@ -37,7 +37,7 @@ export default function MealCard({ meal, onSave, onDeleteMeal }) {
         setIsSaving(true);
         const headers = { 'Content-Type': 'application/json' };
 
-        let savedMeal = await fetch(`http://localhost:3000/meals${draftMeal.id ? ('/' + draftMeal.id) : ''}`, {
+        let savedMeal = await fetch(`/api/meals${draftMeal.id ? ('/' + draftMeal.id) : ''}`, {
             method: draftMeal.id ? 'PATCH' : 'POST',
             credentials: 'include',
             headers,
@@ -55,7 +55,7 @@ export default function MealCard({ meal, onSave, onDeleteMeal }) {
         }).then(response => response.json());
 
         if (draftMeal.id) {
-            await Promise.all(draftMeal.items.map(item => fetch(`http://localhost:3000/meals/${draftMeal.id}/items/${item.id}`, {
+            await Promise.all(draftMeal.items.map(item => fetch(`/api/meals/${draftMeal.id}/items/${item.id}`, {
                 method: 'PATCH',
                 credentials: 'include',
                 headers,
