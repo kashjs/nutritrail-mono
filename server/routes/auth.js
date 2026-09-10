@@ -46,7 +46,23 @@ router.post('/login', dailyLoginsRateLimiter, validate(loginSchema), async (req,
 
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '24h' });
 
-    res.json({ token })
+    res.cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 24 * 60 * 60 * 1000
+    })
+
+    res.json({ id: user.id, email: user.email });
+});
+
+router.post('/logout', (req, res) => {
+    res.clearCookie('token', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax'
+    });
+    res.sendStatus(200);
 });
 
 module.exports = router;
