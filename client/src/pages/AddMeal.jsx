@@ -2,6 +2,7 @@ import { useState } from "react";
 import MealCard from "../components/MealCard";
 import { getLocalDateTimeString } from '../utils/DateTime';
 import { useNavigate } from 'react-router-dom';
+import { MEAL_TYPES } from '../utils/Constants';
 import './AddMeal.css';
 
 export default function AddMeal() {
@@ -12,6 +13,21 @@ export default function AddMeal() {
 
     function onDeleteMeal() {
         setMeal(null);
+    }
+
+    function getMealType() {
+        const hour = new Date().getHours();
+        if (hour <= 10) {
+            return MEAL_TYPES[0]
+        } else if (hour <= 14) {
+            return MEAL_TYPES[1]
+        } else if (hour <= 17) {
+            return MEAL_TYPES[3]
+        } else if (hour <= 21) {
+            return MEAL_TYPES[2]
+        } else {
+            return MEAL_TYPES[3]
+        }
     }
 
     async function generateMeal(e) {
@@ -32,7 +48,7 @@ export default function AddMeal() {
             .then(response => response.json())
             .then(generatedMeal => {
                 generatedMeal.consumed_at = generatedMeal.consumed_at || getLocalDateTimeString();
-                generatedMeal.meal_type = generatedMeal.meal_type || 'breakfast';
+                generatedMeal.meal_type = generatedMeal.meal_type || getMealType();
                 setMeal(generatedMeal);
                 setInputText('');
             })

@@ -26,4 +26,5 @@
     gap: var(--space-5);
     font-size: var(--font-size-xs);
     padding: var(--space-4);
+    overflow-y: auto;
 }
