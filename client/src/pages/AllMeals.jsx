@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import MealCard from '../components/MealCard';
 import { useNavigate } from 'react-router-dom';
+import Loading from '../components/Loading';
 import './AllMeals.css';
 
 export default function AllMeals() {
@@ -38,7 +39,7 @@ export default function AllMeals() {
                     Add Meal
                 </button>
             </div>
-            {loadingMeals && <p>Loading...</p>}
+            {loadingMeals && <Loading />}
             {error && <p>Error loading meals</p>}
             {meals &&
                 <ul className="list-unstyled meals-list">

@@ -3,6 +3,7 @@ import MealCard from "../components/MealCard";
 import { getLocalDateTimeString } from '../utils/DateTime';
 import { useNavigate } from 'react-router-dom';
 import { MEAL_TYPES } from '../utils/Constants';
+import Loading from '../components/Loading';
 import './AddMeal.css';
 
 export default function AddMeal() {
@@ -65,7 +66,7 @@ export default function AddMeal() {
         <div className="add-meals-page">
             <h1>Add Meals</h1>
             <div className="flex-columns gap-4 mt3">
-                {generatingMeal && <p>Loading...</p>}
+                {generatingMeal && <Loading />}
                 {meal && <MealCard meal={meal} onSave={onMealSave} onDeleteMeal={onDeleteMeal} />}
                 <form onSubmit={generateMeal}>
                     <input className="add-meal-input" type="text" placeholder={

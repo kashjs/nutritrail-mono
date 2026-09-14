@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import MealCard from '../components/MealCard';
 import NutritionSummaryCard from '../components/NutritionSummaryCard';
 import { getLocalDateString, addDays } from '../utils/DateTime';
+import Loading from '../components/Loading';
 import './Overview.css';
 
 const WEEK_LENGTH_DAYS = 7;
@@ -74,7 +75,7 @@ export default function Overview() {
                 </button>
             </div>
 
-            {loadingMeals && <p>Loading...</p>}
+            {loadingMeals && <Loading />}
             {error && <p className="text-danger">Error loading meals</p>}
 
             {meals &&
