@@ -18,6 +18,7 @@ export default function RequireAuth() {
             .catch(() => setStatus('anon'))
             .finally(() => {
                 clearTimeout(timer);
+                setWakingUpServer(false);
             });
 
         return () => clearTimeout(timer);
