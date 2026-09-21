@@ -10,6 +10,41 @@ Live at **https://www.nutritrail.net**.
 - `client/` — React (Vite) frontend
 - `learning/` — learning notes and progress log
 
+## Local development setup
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org) (LTS) and npm
+- [PostgreSQL](https://www.postgresql.org/download/) 14+, running locally
+- An [OpenAI API key](https://platform.openai.com/api-keys) (only needed for `/meals/parse`)
+
+Installing and starting Postgres on macOS with Homebrew:
+
+```bash
+brew install postgresql@16
+brew services start postgresql@16
+```
+
+On Debian/Ubuntu: `sudo apt install postgresql` (it starts automatically). On Windows, use the [official installer](https://www.postgresql.org/download/windows/).
+
+### Create the databases
+
+The app uses one database for development and a separate one for tests:
+
+```bash
+createdb nutritrail
+createdb nutritrail_test
+```
+
+(On Linux you may need to run these as the `postgres` user, e.g. `sudo -u postgres createdb nutritrail`, and set a password for your role.) Verify with `psql -l`.
+
+### Run everything
+
+1. Configure the server `.env` files and run migrations (see [Server](#server) below).
+2. Start the backend: `cd server && npm start` (port 3000).
+3. In another terminal, start the frontend: `cd client && npm install && npm run dev` (port 4000).
+4. Open `http://localhost:4000`.
+
 ## Server
 
 ### Setup
@@ -26,6 +61,14 @@ PORT=3000
 DATABASE_URL=postgres://user:password@localhost:5432/nutritrail
 JWT_SECRET=your-secret-key
 OPENAI_API_KEY=your-openai-key
+```
+
+Replace `user:password` with your local Postgres role. On a default Homebrew install the role is your macOS username with no password, so the URL is `postgres://your-username@localhost:5432/nutritrail`.
+
+For tests, create `server/.env.test` with the same variables, but point `DATABASE_URL` at the test database (`.../nutritrail_test`) and run the migrations against it too, so the schema exists there (the tests only truncate tables, they don't create them):
+
+```bash
+DATABASE_URL=postgres://user:password@localhost:5432/nutritrail_test npm run migrate up
 ```
 
 `OPENAI_API_KEY` is required for the `/meals/parse` endpoint, which uses OpenAI to turn freeform meal text into structured nutrition data.
