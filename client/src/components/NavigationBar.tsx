@@ -1,5 +1,6 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import './NavigationBar.css';
+import { logout } from '../api/auth';
 
 export default function NavigationBar() {
     const navigate = useNavigate();
@@ -7,10 +8,7 @@ export default function NavigationBar() {
     const isLoginPage = location.pathname === '/login';
 
     const handleLogout = async () => {
-        await fetch('/api/logout', {
-            method: 'POST',
-            credentials: 'include'
-        });
+        await logout();
         navigate('/login');
     }
 

@@ -2,9 +2,10 @@
 import { useState, useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import Loading from './Loading';
+import { getMe } from '../api/auth';
 
 export default function RequireAuth() {
-    const [status, setStatus] = useState('checking'); // 'checking' | 'authed' | 'anon'
+    const [status, setStatus] = useState<'checking' | 'authed' | 'anon'>('checking'); // 'checking' | 'authed' | 'anon'
     const [wakingUpServer, setWakingUpServer] = useState(false);
 
     useEffect(() => {
@@ -13,8 +14,8 @@ export default function RequireAuth() {
             setWakingUpServer(true);
         }, 3000);
 
-        fetch('/api/me', { credentials: 'include' })
-            .then(res => setStatus(res.ok ? 'authed' : 'anon'))
+        getMe()
+            .then(() => setStatus('authed'))
             .catch(() => setStatus('anon'))
             .finally(() => {
                 clearTimeout(timer);
