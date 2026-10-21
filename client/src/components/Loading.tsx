@@ -1,6 +1,10 @@
 import './Loading.css';
 
-export default function Loading({ loadingText }) {
+interface LoadingProps {
+    loadingText?: string;
+}
+
+export default function Loading({ loadingText }: LoadingProps) {
     return (
         <div className="loading-spinner-container">
             <div className="loading-spinner-spinning"></div>

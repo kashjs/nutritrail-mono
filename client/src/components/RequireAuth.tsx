@@ -28,7 +28,7 @@ export default function RequireAuth() {
 
 
 
-    if (status === 'checking' || wakingUpServer) return <Loading loadingText={wakingUpServer && "Starting server. Please wait a few seconds."} />;
+    if (status === 'checking' || wakingUpServer) return <Loading loadingText={wakingUpServer ? "Starting server. Please wait a few seconds." : ""} />;
     if (status === 'anon') return <Navigate to="/login" replace />;
     return <Outlet />;
 }
